@@ -1,0 +1,35 @@
+#!/bin/csh
+
+cd
+
+if (! -e ~/.gitconfig ) then
+    git config --global color.ui    true
+    git config --global core.pager  "less -R"
+    git config --global user.name   "bg"
+    git config --global user.email  "bgrt@free.fr"
+    #git config --global core.editor "/Applications/MacVim.app/Contents//MacOS/Vim"
+    git config --global core.editor  vim
+
+    git config --global alias.au       add -u
+    git config --global alias.co       checkout
+    git config --global alias.st       status
+    git config --global alias.ts       status
+    git config --global alias.cm       commit
+    git config --global alias.lg       'log --oneline --decorate --all --graph'
+    git config --global alias.type     'cat-file -t'
+    git config --global alias.dump     'cat-file -p'
+    git config --global alias.hist     'log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+    git config --global alias.hst      "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+    git config --global rerere.enabled true
+endif
+
+
+if (! -e ~/.gitignore ) then
+    echo '*.swp'     >  ~/.gitignore
+    echo '*~'        >> ~/.gitignore
+    echo 'tags'      >> ~/.gitignore
+    echo '*.myified' >> ~/.gitignore
+endif
+
+exit 0
+
