@@ -20,6 +20,7 @@ if (! -e ~/.gitconfig ) then
     git config --global alias.dump     'cat-file -p'
     git config --global alias.hist     'log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
     git config --global alias.hst      "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+    git config --global alias.lrt      "for-each-ref --sort='-committerdate' --format='%(refname)%09%(committerdate)'"
     git config --global rerere.enabled true
 endif
 
