@@ -27,6 +27,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
+Plugin 'alfredodeza/coveragepy.vim'
+Plugin 'tommcdo/vim-exchange'
+Plugin 'sjl/gundo.vim'
 "Plugin 'honza/vim-snippets'
 "Plugin 'SirVer/ultisnips'
 " All of your Plugins must be added before the following line
@@ -36,18 +39,43 @@ call vundle#end()            " required
 
 filetype plugin indent on    " required
 
+" store the annoying back-up file in a tmp directory
+"set backupdir=~/vimtmp
+"set directory=~/vimtmp
+set nobackup
+set nowritebackup
+set noswapfile
+"set nowrapscan 
+set smartindent
+set smartcase
+
+" ignore whites in diff mode
+set diffopt+=iwhite
+
 "remove message Press ENTER or type command to continue
 set shortmess=a
 set cmdheight=2
 
+noremap    \    ,
 let mapleader=","
 set noerrorbells
 set visualbell
 set spelllang=en_us
 
+nnoremap <F5>           :GundoToggle<cr>
+
+
 nmap <silent> <leader>s :set spell!<cr>
 nmap <leader>nt         :NERDTree<CR>
-nmap <leader>v :tabedit $MYVIMRC<CR>
+nmap <leader>v          :tabedit $MYVIMRC<CR>
+"nmap <leader>m          :edit%:p:h/mdlStruct.txt<cr>:set syntax=fortran<cr>
+nmap <leader>m          :vsplit%:p:h/mdlStruct.txt<cr>:set syntax=fortran<cr><c-w>xz.
+nmap <leader>t          :vsplit%:p:h/tags<cr>:set syntax=fortran<cr><c-w>x
+nmap <leader>ftn        :set syntax=fortran<cr>
+
+" vertical split and a bit of tiding up
+nmap <leader>vs          :vsplit<cr>z.<c-w>w
+
 "
 "auto-center
 nmap   G   Gzz
@@ -55,6 +83,10 @@ nmap   n   nzz
 nmap   N   Nzz
 nmap   }   }zz
 nmap   {   {zz
+nmap   *   *zz
+nmap   g*  g*zz
+nmap   #   #zz
+nmap   g#  g#zz
 
 
 "let &t_Co=256
@@ -66,15 +98,34 @@ cnoremap   qa1   qa!
 cnoremap   qA    qa!
 cnoremap   Qa    qa!
 cnoremap   QA    qa!
-
+cnoremap   Wqa   wqa
+cnoremap   W     w
+cnoremap   ysbr  ?^\s*subroutine?,  /^\s*end\s*subroutine/ y<cr>
+cnoremap   yfct  ?^\s*function?,    /^\s*end\s*function/   y<cr>
 inoremap   jk   <Esc>
 
 "set relativenumber
 set number
 syntax on
 
-nmap <leader>= :s/ *= */ = /<CR>
-nmap <leader>, :s/ *, */, /g<CR>
+"align with line just above
+nmap <leader>aa      0dwkywjP0w
+"align with line just below
+nmap <leader>ab      0dwjywkP0w
+"remove spaces around = sign
+nmap <leader>u=      :s/ *= */=/e<CR>
+"normalize spaces around = sign
+nmap <leader>=       :s/ *= */ = /e<CR>+
+"normalize spaces around , signs
+nmap <leader>,       :s/ *, */, /eg<CR>+
+                     
+nmap <leader>.       :s/ *, */, /eg<CR>:s/ *= */ = /e<CR>+
+inoremap   kj        <Esc>:s/ *, */, /eg<CR>:s/ *= */ = /e<CR>
+" f90 comment one line
+nmap <leader>!       I!!! <esc>+
+" cx one char
+nmap <leader>o       cxl
+
 "if exists(":Tabularize")
     nmap <leader>a! :Tabularize  /!<CR>
     vmap <leader>a! :Tabularize  /!<CR>
@@ -84,6 +135,14 @@ nmap <leader>, :s/ *, */, /g<CR>
     vmap <leader>a: :Tabularize  /::<CR>
     nmap <leader>a, :Tabularize  /,\zs<CR>
     vmap <leader>a, :Tabularize  /,\zs<CR>
+    nmap <leader>a( :Tabularize  /(<CR>
+    vmap <leader>a( :Tabularize  /(<CR>
+    nmap <leader>a) :Tabularize  /)<CR>
+    vmap <leader>a) :Tabularize  /)<CR>
+    nmap <leader>a& :Tabularize  /&<CR>
+    vmap <leader>a& :Tabularize  /&<CR>
+    nmap <leader>a' :Tabularize  /'<CR>
+    vmap <leader>a' :Tabularize  /'<CR>
     "nmap <leader>a: :Tabularize  /::\zs<CR>
     "vmap <leader>a: :Tabularize  /::\zs<CR>
 "endif
@@ -147,7 +206,30 @@ iabbrev _r8a   real(kind=8), allocatable ::
 iabbrev _ca8   complex(kind=8), allocatable ::
 iabbrev _c8a   complex(kind=8), allocatable ::
 
+iabbrev nisnt  ninst 
+iabbrev sisec  in_si_sec
+iabbrev simsec in_si_msec
+iabbrev nsamp  in_nsamps
+iabbrev nsamps in_nsamps
+iabbrev nsmap  in_nsamps
 iabbrev wrt    write(*, *) 
+iabbrev sbr    subroutine
+iabbrev fct    function
+iabbrev rtn    return
+iabbrev itf    interface
+iabbrev mdl    module
+iabbrev impl   implicit none
+iabbrev aln    xxxxxxxxxxxxxxxxxxxxxxxxx :: xxx
+iabbrev flase  false
+iabbrev fasle  false
+iabbrev errro  error
+iabbrev endd0  enddo
+
+" make end statement from a heading
+nmap <leader>ee      yypiend <esc>f(Do<esc>2ko    implicit none<cr><esc>kO!!! 
+nmap <leader>ud      ^lcwundef<esc>elD+
+
+
 "iabbrev _magic set dn = `dirname $0 ` ; set bn = `basename $0` ; set here = `( cd ${dn} ; pwd )` ; source ${here}/readCommandLine $* me=${here}/${bn}  addPid=$$
 
 

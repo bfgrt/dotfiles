@@ -3,17 +3,19 @@
 cd
 
 if (! -e ~/.gitconfig ) then
-    git config --global color.ui    true
-    git config --global core.pager  "less -R"
-    git config --global user.name   "bg"
-    git config --global user.email  "bgrt@free.fr"
-    #git config --global core.editor "/Applications/MacVim.app/Contents//MacOS/Vim"
-    git config --global core.editor  vim
+    git config --global color.ui      true
+    git config --global core.pager    "less -R"
+    git config --global user.name     "bg"
+    git config --global user.email    "bgrt@free.fr"
+    #git config --global core.editor   "/Applications/MacVim.app/Contents//MacOS/Vim"
+    git config --global core.editor    vim
 
     git config --global alias.au       add -u
     git config --global alias.co       checkout
     git config --global alias.st       status
     git config --global alias.ts       status
+    git config --global alias.br       branch
+    git config --global alias.brdoc    'branch --edit-description'
     git config --global alias.cm       commit
     git config --global alias.lg       'log --oneline --decorate --all --graph'
     git config --global alias.type     'cat-file -t'
